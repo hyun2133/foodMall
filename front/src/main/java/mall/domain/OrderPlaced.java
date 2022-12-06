@@ -11,11 +11,16 @@ import lombok.*;
 public class OrderPlaced extends AbstractEvent {
 
     private Long id;
+    private String foodId;
+    private Object options;
+    private String address;
+    private String customerId;
 
     public OrderPlaced(Order aggregate){
         super(aggregate);
     }
     public OrderPlaced(){
         super();
-    }
+    }  
+
 }

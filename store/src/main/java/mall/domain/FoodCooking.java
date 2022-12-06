@@ -90,7 +90,19 @@ public class FoodCooking  {
 
 
     public void accept(AcceptCommand acceptCommand){
+        if(acceptCommand.getAccept()) {
+            OrderAccepted orderAccepted = new OrderAccepted(this);
+            orderAccepted.publishAfterCommit();
+
+            setStatus("order accepted");
+        } else {
+            OrderRejected orderRejected = new OrderRejected(this);
+            orderRejected.publishAfterCommit();
+
+            setStatus("order rejected");
+        }
     }
+    
     public void start(){
         CookStarted cookStarted = new CookStarted(this);
         cookStarted.publishAfterCommit();
@@ -99,11 +111,16 @@ public class FoodCooking  {
 
     public static void orderInfoCopy(OrderPlaced orderPlaced){
 
-        /** Example 1:  new item 
+        /** Example 1:  new item    */
         FoodCooking foodCooking = new FoodCooking();
+        foodCooking.setCustomerId(orderPlaced.getCustomerId());
+        foodCooking.setFoodId(orderPlaced.getFoodId());
+        //foodCooking.setAddress(orderPlaced.getAddress());
+        foodCooking.setOrderId(String.valueOf(orderPlaced.getOrderId()));
+        foodCooking.setStatus("미결재");
         repository().save(foodCooking);
 
-        */
+     
 
         /** Example 2:  finding and process
         
@@ -123,19 +140,19 @@ public class FoodCooking  {
         /** Example 1:  new item 
         FoodCooking foodCooking = new FoodCooking();
         repository().save(foodCooking);
-
         */
-
-        /** Example 2:  finding and process
         
-        repository().findById(paid.get???()).ifPresent(foodCooking->{
-            
-            foodCooking // do something
+        
+
+        /** Example 2:  finding and process */
+        
+        repository().findByOrderId(paid.getOrderId()).ifPresent(foodCooking->{
+            foodCooking.setStatus("결재됨");
             repository().save(foodCooking);
 
 
          });
-        */
+       
 
         
     }

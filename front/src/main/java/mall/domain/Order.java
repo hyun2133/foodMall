@@ -51,9 +51,6 @@ public class Order  {
     private String customerId;
     
     
-    
-    
-    
     private String storeId;
 
     @PostPersist
